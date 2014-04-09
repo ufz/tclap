@@ -4,6 +4,7 @@ AC_CONFIG_AUX_DIR(config)
 AM_CONFIG_HEADER(config/config.h)
 AM_INIT_AUTOMAKE(tclap,1.2.1)
 AC_PROG_CXX
+AX_CXX_COMPILE_STDCXX_11(noext,mandatory)
 AC_CXX_HAVE_SSTREAM
 AC_CXX_HAVE_STRSTREAM
 AC_CXX_HAVE_LONG_LONG
@@ -18,14 +19,14 @@ CXXFLAGS="$CXXFLAGS $WARN_EFFECTIVE_CXX"
 AM_CONDITIONAL([HAVE_GNU_COMPILERS], [test x$ac_cv_cxx_compiler_gnu = xyes])
 
 AC_OUTPUT([ Makefile \
-	   tclap.pc \
+           tclap.pc \
            examples/Makefile \
-		   include/Makefile \
-		   include/tclap/Makefile \
-		   config/Makefile \
-		   docs/Makefile \
-		   docs/Doxyfile  \
-		   msc/Makefile  \
-		   msc/examples/Makefile  \
-		   tests/Makefile], \
-		   [chmod a+x $ac_top_srcdir/tests/*.sh])
+           include/Makefile \
+           include/tclap/Makefile \
+           config/Makefile \
+           docs/Makefile \
+           docs/Doxyfile  \
+           msc/Makefile  \
+           msc/examples/Makefile  \
+           tests/Makefile], \
+           [chmod a+x $ac_top_srcdir/tests/*.sh])

@@ -52,11 +52,17 @@ class ArgException : public std::exception
 			  _argId( id ), 
 			  _typeDescription(td)
 		{ } 
+
+    /**
+     * Defautl copy constructor
+     * @param o object to copy
+     */
+    ArgException( ArgException const & o) = default;
 		
 		/**
 		 * Destructor.
 		 */
-		virtual ~ArgException() throw() { }
+		virtual ~ArgException() noexcept { }
 
 		/**
 		 * Returns the error text.
@@ -77,7 +83,7 @@ class ArgException : public std::exception
 		/**
 		 * Returns the arg id and error text. 
 		 */
-		const char* what() const throw() 
+		const char* what() const noexcept 
 		{
 			static std::string ex; 
 			ex = _argId + " -- " + _errorText;
