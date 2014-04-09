@@ -231,6 +231,8 @@ inline void ZshCompletionOutput::printOption(Arg* a, std::string mutex)
 	if ( a->isValueRequired() )
 	{
 		std::string arg = a->shortID();
+    if ( *arg.rbegin() )
+      arg.erase(--arg.end());
 		arg.erase(0, arg.find_last_of(theDelimiter) + 1);
 		if ( arg.at(arg.length()-1) == ']' )
 			arg.erase(arg.length()-1);
