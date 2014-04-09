@@ -34,5 +34,5 @@ test26_SOURCES = test26.cpp
 AM_CPPFLAGS = -I$(top_srcdir)/include
 
 if HAVE_GNU_COMPILERS
-  AM_CXXFLAGS = -Wall -Wextra -Wdeprecated -Werror
+  AM_CXXFLAGS = -Wall -Wextra -Wdeprecated -Werror -Wno-unused-parameter
 endif
