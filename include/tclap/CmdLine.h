@@ -639,7 +639,7 @@ inline void CmdLine::parse(const std::string& args)
 	else if(currentState == InArgQuote)
 		throw(CmdLineParseException("Starting quote has no ending quote."));
 
-	for(int i=0;i<oargs.size();++i)
+	for(std::size_t i=0;i<oargs.size();++i)
 		std::cout << i << "=\"" << oargs[i] << "\"" << std::endl;
 	parse(oargs);
 }
