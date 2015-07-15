@@ -1,24 +1,24 @@
 // -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
 
-/****************************************************************************** 
- * 
+/******************************************************************************
+ *
  *  file:  ArgException.h
- * 
+ *
  *  Copyright (c) 2003, Michael E. Smoot .
  *  All rights reverved.
- * 
+ *
  *  See the file COPYING in the top directory of this distribution for
  *  more information.
- *  
- *  THE SOFTWARE IS PROVIDED _AS IS_, WITHOUT WARRANTY OF ANY KIND, EXPRESS 
- *  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
- *  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
- *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
- *  DEALINGS IN THE SOFTWARE.  
- *  
- *****************************************************************************/ 
+ *
+ *  THE SOFTWARE IS PROVIDED _AS IS_, WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ *  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ *  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ *  DEALINGS IN THE SOFTWARE.
+ *
+ *****************************************************************************/
 
 
 #ifndef TCLAP_ARG_EXCEPTION_H
@@ -26,6 +26,13 @@
 
 #include <string>
 #include <exception>
+
+// Fix for Visual Studio, see https://github.com/ufz/tclap/issues/1
+#ifndef _MSC_VER
+#define NOEXCEPT noexcept
+#else
+#define NOEXCEPT
+#endif
 
 namespace TCLAP {
 
@@ -36,7 +43,7 @@ namespace TCLAP {
 class ArgException : public std::exception
 {
 	public:
-	
+
 		/**
 		 * Constructor.
 		 * \param text - The text of the exception.
@@ -44,25 +51,25 @@ class ArgException : public std::exception
 		 * \param td - Text describing the type of ArgException it is.
 		 * of the exception.
 		 */
-		ArgException( const std::string& text = "undefined exception", 
+		ArgException( const std::string& text = "undefined exception",
 					  const std::string& id = "undefined",
 					  const std::string& td = "Generic ArgException")
-			: std::exception(), 
-			  _errorText(text), 
-			  _argId( id ), 
+			: std::exception(),
+			  _errorText(text),
+			  _argId( id ),
 			  _typeDescription(td)
-		{ } 
+		{ }
 
     /**
      * Defautl copy constructor
      * @param o object to copy
      */
     ArgException( ArgException const & o) = default;
-		
+
 		/**
 		 * Destructor.
 		 */
-		virtual ~ArgException() noexcept { }
+		virtual ~ArgException() NOEXCEPT { }
 
 		/**
 		 * Returns the error text.
@@ -72,20 +79,20 @@ class ArgException : public std::exception
 		/**
 		 * Returns the argument id.
 		 */
-		std::string argId() const  
-		{ 
+		std::string argId() const
+		{
 			if ( _argId == "undefined" )
 				return " ";
 			else
-				return ( "Argument: " + _argId ); 
+				return ( "Argument: " + _argId );
 		}
 
 		/**
-		 * Returns the arg id and error text. 
+		 * Returns the arg id and error text.
 		 */
-		const char* what() const noexcept 
+		const char* what() const NOEXCEPT
 		{
-			static std::string ex; 
+			static std::string ex;
 			ex = _argId + " -- " + _errorText;
 			return ex.c_str();
 		}
@@ -96,7 +103,7 @@ class ArgException : public std::exception
 		 */
 		std::string typeDescription() const
 		{
-			return _typeDescription; 
+			return _typeDescription;
 		}
 
 
@@ -125,19 +132,19 @@ class ArgException : public std::exception
  * parse the argument it has been passed.
  */
 class ArgParseException : public ArgException
-{ 
+{
 	public:
 		/**
 		 * Constructor.
 		 * \param text - The text of the exception.
-		 * \param id - The text identifying the argument source 
+		 * \param id - The text identifying the argument source
 		 * of the exception.
 		 */
-		ArgParseException( const std::string& text = "undefined exception", 
+		ArgParseException( const std::string& text = "undefined exception",
 					       const std::string& id = "undefined" )
-			: ArgException( text, 
-			                id, 
-							std::string( "Exception found while parsing " ) + 
+			: ArgException( text,
+			                id,
+							std::string( "Exception found while parsing " ) +
 							std::string( "the value the Arg has been passed." ))
 			{ }
 };
@@ -152,12 +159,12 @@ class CmdLineParseException : public ArgException
 		/**
 		 * Constructor.
 		 * \param text - The text of the exception.
-		 * \param id - The text identifying the argument source 
+		 * \param id - The text identifying the argument source
 		 * of the exception.
 		 */
-		CmdLineParseException( const std::string& text = "undefined exception", 
+		CmdLineParseException( const std::string& text = "undefined exception",
 					           const std::string& id = "undefined" )
-			: ArgException( text, 
+			: ArgException( text,
 			                id,
 							std::string( "Exception found when the values ") +
 							std::string( "on the command line do not meet ") +
@@ -167,7 +174,7 @@ class CmdLineParseException : public ArgException
 };
 
 /**
- * Thrown from Arg and CmdLine when an Arg is improperly specified, e.g. 
+ * Thrown from Arg and CmdLine when an Arg is improperly specified, e.g.
  * same flag as another Arg, same name, etc.
  */
 class SpecificationException : public ArgException
@@ -176,16 +183,16 @@ class SpecificationException : public ArgException
 		/**
 		 * Constructor.
 		 * \param text - The text of the exception.
-		 * \param id - The text identifying the argument source 
+		 * \param id - The text identifying the argument source
 		 * of the exception.
 		 */
 		SpecificationException( const std::string& text = "undefined exception",
 					            const std::string& id = "undefined" )
-			: ArgException( text, 
+			: ArgException( text,
 			                id,
 							std::string("Exception found when an Arg object ")+
 							std::string("is improperly defined by the ") +
-							std::string("developer." )) 
+							std::string("developer." ))
 		{ }
 
 };
