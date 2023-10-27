@@ -6,3 +6,5 @@ set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_subdirectory(examples)
+
+install(DIRECTORY include/tclap TYPE INCLUDE)
